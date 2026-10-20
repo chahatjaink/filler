@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytical Engineer — Example Company</title>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; font: 16px/1.5 "Avenir Next", "Segoe UI", sans-serif; background: #f3efe6; color: #1c1917; }
+    main { width: min(720px, calc(100% - 32px)); margin: 32px auto 64px; }
+    h1 { font-family: Palatino, Georgia, serif; font-size: 40px; line-height: 1; margin-bottom: 8px; }
+    article, form, #log { background: white; border: 1px solid #d9d1c3; border-radius: 12px; padding: 16px 18px; margin-top: 16px; }
+    label, legend { display: block; margin: 12px 0 4px; }
+    input, select, button, textarea { font: inherit; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="url"], select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #d9d1c3; border-radius: 8px; }
+    fieldset { border: 1px solid #d9d1c3; border-radius: 8px; margin-top: 12px; }
+    .row { display: flex; gap: 16px; }
+    button { margin-top: 16px; margin-right: 8px; border: 0; border-radius: 999px; padding: 8px 14px; background: #e0a12e; cursor: pointer; }
+    button.dark { background: #1c1917; color: #f3efe6; }
+    #log { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; white-space: pre-wrap; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <p>Demo application</p>
+    <h1>Analytical Engineer</h1>
+    <article>
+      <p>Example Company is hiring an Analytical Engineer in London or remote. The role builds calculation tools and explains them to non-specialists.</p>
+      <p>Requirements: mathematics, algorithms, and clear technical writing. Compensation: £90,000–£110,000 depending on experience. No visa sponsorship.</p>
+    </article>
+
+    <form id="application">
+      <div id="step-1">
+        <label for="first">First name</label>
+        <input id="first" name="first" type="text" autocomplete="given-name">
+        <label for="last">Last name</label>
+        <input id="last" name="last" type="text" autocomplete="family-name">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel">
+
+        <label for="degree">Degree</label>
+        <select id="degree" name="degree">
+          <option value="">Select</option>
+          <option value="ba">Bachelor's degree</option>
+          <option value="ms">Master's degree</option>
+          <option value="phd">Doctorate</option>
+        </select>
+
+        <fieldset>
+          <legend>Are you authorized to work in the United Kingdom?</legend>
+          <label><input type="radio" name="auth" value="yes"> Yes</label>
+          <label><input type="radio" name="auth" value="no"> No</label>
+        </fieldset>
+
+        <label><input id="sponsor" type="checkbox"> I need visa sponsorship</label>
+
+        <div data-automation-id="formField-source">
+          <label id="source-label">How did you hear about us?</label>
+          <button type="button" id="source" aria-haspopup="listbox" aria-labelledby="source-label" aria-controls="source-list">Select one</button>
+          <ul id="source-list" role="listbox" hidden>
+            <li role="option">Company website</li>
+            <li role="option">LinkedIn</li>
+            <li role="option">Referral</li>
+          </ul>
+        </div>
+
+        <label for="why">Why this role?</label>
+        <textarea id="why" name="why" rows="4"></textarea>
+        <label>Resume <input id="resume" type="file"></label>
+        <input type="password" autocomplete="current-password" aria-label="Password">
+        <label>Leave this field blank <input name="company_website" tabindex="-1" style="position:absolute;left:-9999px"></label>
+        <button type="button" id="next">Next</button>
+      </div>
+
+      <div id="step-2" hidden>
+        <label for="city">City</label>
+        <input id="city" name="city" type="text" autocomplete="address-level2">
+        <label for="site">Website</label>
+        <input id="site" name="url" type="url" autocomplete="url">
+        <button type="submit" class="dark">Submit application</button>
+      </div>
+    </form>
+    <div id="log" aria-live="polite">Events will appear here.</div>
+  </main>
+  <script>
+    const logNode = document.querySelector("#log");
+    const lines = [];
+    function log(message) {
+      lines.unshift(message);
+      logNode.textContent = lines.join("\n");
+    }
+
+    for (const input of document.querySelectorAll("input, textarea, select")) {
+      if (input.type === "file" || input.type === "password" || input.type === "checkbox" || input.type === "radio") {
+        input.addEventListener("change", () => log(`${input.name || input.id} change ${input.type === "checkbox" || input.type === "radio" ? input.checked : ""}`));
+        continue;
+      }
+      const proto = Object.getOwnPropertyDescriptor(input.constructor.prototype, "value");
+      input._valueTracker = { setValue(value) { log(`${input.id || input.name} tracker ${value}`); } };
+      input.addEventListener("input", () => log(`${input.id || input.name} input ${proto.get.call(input)}`));
+      input.addEventListener("change", () => log(`${input.id || input.name} change`));
+      input.addEventListener("blur", () => log(`${input.id || input.name} blur`));
+    }
+
+    const source = document.querySelector("#source");
+    const sourceList = document.querySelector("#source-list");
+    source.addEventListener("click", () => { sourceList.hidden = !sourceList.hidden; });
+    sourceList.addEventListener("click", (event) => {
+      const option = event.target.closest("[role='option']");
+      if (!option) return;
+      source.textContent = option.textContent;
+      sourceList.hidden = true;
+      log(`source selected ${option.textContent}`);
+    });
+
+    document.querySelector("#next").addEventListener("click", () => {
+      document.querySelector("#step-1").hidden = true;
+      document.querySelector("#step-2").hidden = false;
+      log("moved to step 2");
+    });
+    document.querySelector("#application").addEventListener("submit", (event) => {
+      event.preventDefault();
+      log("submit pressed");
+    });
+  </script>
+</body>
+</html>

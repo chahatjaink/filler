@@ -1,0 +1,13 @@
+{
+  "name": "filler",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "npm run check && node --test tests/*.test.mjs",
+    "check": "node --check background/service-worker.js && node --check background/llm.js && node --check background/prompts.js && node --check background/parse-json.js && node --check background/normalize.js && node --check popup/popup.js && node --check options/options.js && node --check content/dom.js && node --check content/match.js && node --check content/extract.js && node --check content/fill.js && node --check shared/defaults.js",
+    "icons": "python3 scripts/render-icons.py"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
+}

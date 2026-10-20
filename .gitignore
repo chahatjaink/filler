@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+*.log
+.live-ext/
+.chrome-profile/
+.live-shot.png

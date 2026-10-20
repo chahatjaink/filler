@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Filler</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="mark">Filler</p>
+      <p class="tag">Job forms, from your own notes.</p>
+    </div>
+    <button id="settings" type="button" class="text-button">Settings</button>
+  </header>
+
+  <section id="setup" class="panel" hidden>
+    <p id="setup-copy">Add an API key and your background before filling a form.</p>
+    <button id="open-setup" type="button" class="primary">Open settings</button>
+  </section>
+
+  <section id="ready" hidden>
+    <p id="meta" class="meta"></p>
+    <div class="actions">
+      <button id="fill" type="button" class="primary">Fill form</button>
+      <button id="summarize" type="button" class="secondary">Summarize page</button>
+    </div>
+    <label class="advance">
+      <input id="advance" type="checkbox">
+      <span>Advance through Next. Won’t press Submit or Apply.</span>
+    </label>
+    <button id="cancel" type="button" class="text-button cancel" hidden>Cancel</button>
+  </section>
+
+  <p id="status" class="status" role="status"></p>
+  <div id="result"></div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

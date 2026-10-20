@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Filler settings</title>
+  <link rel="icon" href="../icons/icon32.png">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Filler</p>
+      <h1>Your key. Your notes. The form.</h1>
+      <p class="lede">The key stays in this browser profile. Page text and your notes are sent only when you click Fill or Summarize, and only to the provider you choose.</p>
+    </header>
+
+    <form id="settings">
+      <section>
+        <h2>Provider</h2>
+        <div class="providers" role="radiogroup" aria-label="Model provider">
+          <label><input type="radio" name="provider" value="openai" checked> OpenAI</label>
+          <label><input type="radio" name="provider" value="anthropic"> Anthropic</label>
+          <label><input type="radio" name="provider" value="gemini"> Gemini</label>
+          <label><input type="radio" name="provider" value="grok"> Grok</label>
+        </div>
+        <p class="links">
+          <a id="key-link" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">Get an API key</a>
+        </p>
+        <label class="stack" for="api-key">API key</label>
+        <div class="key-row">
+          <input id="api-key" name="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your key">
+          <button id="toggle-key" type="button" class="ghost">Show</button>
+        </div>
+        <p id="key-hint" class="hint"></p>
+
+        <label class="stack" for="model">Model</label>
+        <input id="model" name="model" type="text" autocomplete="off" spellcheck="false" placeholder="gpt-4o-mini">
+        <p class="hint">Leave blank to use the default. If a test fails, paste the model id from your provider.</p>
+
+        <label class="stack" for="base-url">API base URL <span>optional</span></label>
+        <input id="base-url" name="baseUrl" type="url" autocomplete="off" spellcheck="false" placeholder="https://api.openai.com/v1">
+        <p class="hint">Use this for an OpenAI-compatible host such as a local proxy. HTTPS only, except localhost.</p>
+      </section>
+
+      <section>
+        <h2>Background</h2>
+        <p class="hint">Paste a resume, contact details, and preferences in any format. The model only uses what you put here.</p>
+        <textarea id="profile" name="profile" rows="16" placeholder="Name: Ada Lovelace&#10;Email: ada@example.com&#10;Phone: +1 415 555 0130&#10;&#10;Authorized to work in the United States. No sponsorship needed.&#10;&#10;Most recent role: Analytical Engines, London — computing theorist, 1842–1852.&#10;Skills: mathematics, algorithms, technical writing.&#10;&#10;Location preference: remote or London.&#10;How I heard about roles: company website."></textarea>
+        <p id="count" class="hint">0 characters</p>
+      </section>
+
+      <section>
+        <h2>Multi-step forms</h2>
+        <label class="check">
+          <input id="advance" name="autoAdvance" type="checkbox">
+          <span>After a step is filled, click a button named Next or Save and Continue. Submit and Apply are never clicked.</span>
+        </label>
+        <label class="stack" for="steps">Maximum steps</label>
+        <input id="steps" name="maxSteps" type="number" min="1" max="6" value="3">
+      </section>
+
+      <div class="savebar">
+        <button id="save" type="submit" class="primary">Save</button>
+        <button id="test" type="button" class="ghost">Test key</button>
+        <p id="feedback" role="status"></p>
+      </div>
+    </form>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>
